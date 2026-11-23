@@ -1,0 +1,29 @@
+{
+  "name": "yuki-yoshikawa-whatsapp-bot",
+  "version": "6.0.1",
+  "description": "Yuki v6 Advanced WhatsApp bot with modular command execution, Groq text and vision AI, persistent Supabase memory, group systems, anime lookup, web search, MEGA menu media and private Telegram pairing",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node --check index.js && node --check core/command-runtime.js && node --check permissions/access-control.js && node --check ai/metrics.js && node --check ai/groq-vision.js && node --check web-search.js && node --check kord-yt-audio.js && node --check supabase-auth-state.js && node --check auth-crypto.js && node scripts/auth-crypto-test.js && node --check scripts/security-audit.js && node --check ported-kord.js && node --check mega-menu-store.js && node --check config.js && node --check telegram.js && node --check features.js && node --check supabase.js && node --check owner-store.js && node --check yuki-personality.js && node scripts/permission-smoke-test.js && node scripts/upgrade-smoke-test.js && node scripts/yuki-upgrade-regression-test.js && node scripts/v6-module-tests.js && node scripts/web-account-center-test.js && node scripts/web-search-test.js",
+    "postinstall": "patch-package",
+    "security-audit": "node scripts/security-audit.js && node scripts/web-account-center-test.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.55.0",
+    "@whiskeysockets/baileys": "^6.7.22",
+    "axios": "^1.19.0",
+    "dotenv": "^16.4.7",
+    "long": "^5.3.2",
+    "megajs": "^1.3.7",
+    "pino": "^9.5.0",
+    "telegraf": "^4.16.3",
+    "yt-search": "^2.13.1"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "patch-package": "^8.0.1"
+  }
+}

@@ -1,0 +1,134 @@
+services:
+  - type: web
+    name: yuki-yoshikawa-whatsapp-bot
+    runtime: docker
+    plan: free
+
+    startCommand: npm start
+    healthCheckPath: /health
+
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+
+      - key: NODE_OPTIONS
+        value: "--max-old-space-size=384"
+
+      - key: UV_THREADPOOL_SIZE
+        value: "2"
+
+      # ── Render storage ───────────────────────
+      # Auth is also mirrored to Supabase bot_state by index.js so normal
+      # Render restarts/redeploys can restore the linked WhatsApp session.
+      - key: SESSIONS_DIR
+        value: ./sessions
+
+      - key: YUKI_DATA_DIR
+        value: ./data
+
+      - key: YUKI_MEMORY_DIR
+        value: ./memory
+
+      - key: AUTH_SNAPSHOT_INTERVAL_MS
+        value: "30000"
+
+      # ── Supabase ─────────────────────────────
+      - key: SUPABASE_REQUIRED
+        value: "true"
+
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+
+      - key: TELEGRAM_ADMIN_ID
+        sync: false
+
+      # ── Owners ───────────────────────────────
+      - key: OWNER_NUMBER
+        sync: false
+
+      - key: OWNER_DISPLAY_NAME
+        sync: false
+
+      # Generate a random 32+ character secret for the protected Yuki Account Center.
+      - key: YUKI_WEB_ADMIN_TOKEN
+        sync: false
+
+      # ── Moderation ───────────────────────────
+      - key: KNOWN_BOT_NUMBERS
+        sync: false
+
+      # ── Supabase ─────────────────────────────
+      - key: SUPABASE_URL
+        sync: false
+
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+
+      # Generate once with: node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+      # Keep this value unchanged across deploys or existing sessions cannot decrypt.
+      - key: AUTH_SNAPSHOT_ENCRYPTION_KEY
+        sync: false
+
+      # ── MEGA menu-media storage ────────────
+      - key: MEGA_EMAIL
+        sync: false
+
+      - key: MEGA_PASSWORD
+        sync: false
+
+      # ── Groq ─────────────────────────────────
+      - key: GROQ_API_KEY
+        sync: false
+
+      - key: GROQ_API_KEYS
+        sync: false
+
+      - key: GROQ_MODELS
+        value: openai/gpt-oss-120b,openai/gpt-oss-20b,qwen/qwen3.8-27b
+
+      - key: GROQ_MODEL
+        sync: false
+
+      - key: GROQ_VISION_MODEL
+        value: qwen/qwen3.8-27b
+
+      - key: GROQ_REQUEST_TIMEOUT_MS
+        value: "25000"
+
+      - key: GROQ_MAX_IMAGE_BYTES
+        value: "8388608"
+
+      - key: GROQ_URL
+        value: https://api.groq.com/openai/v1/chat/completions
+
+      - key: GROQ_URLS
+        sync: false
+
+      - key: BRAVE_SEARCH_API_KEY
+        sync: false
+
+      # ── Support ──────────────────────────────
+      - key: SUPPORT_YOUTUBE
+        sync: false
+
+      - key: SUPPORT_WHATSAPP
+        sync: false
+
+      - key: SUPPORT_TIKTOK
+        sync: false
+
+      # ── Yuki ───────────────────────────────
+      - key: YUKI_STICKER_MODE
+        value: always
+
+      - key: YUKI_MEMORY_TTL_MINUTES
+        value: "25"
+
+      # ── Optional ────────────────────────────
+
+      # Optional HTTPS heartbeat URL supplied by an external monitoring provider.
+      - key: UPTIME_MONITOR_URL
+        sync: false
+      - key: UPTIME_MONITOR_INTERVAL_MS
+        value: "300000"
+      # Keep plan: free. External checks can observe /health; free services may still sleep when idle.

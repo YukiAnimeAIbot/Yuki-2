@@ -1,0 +1,18 @@
+'use strict';
+const assert = require('node:assert/strict');
+const { encryptJson, decryptJson, getKey } = require('../auth-crypto');
+const key = '0123456789abcdef'.repeat(4);
+const source = JSON.stringify({ registered: true, nested: { value: 'yuki', bytes: [1, 2, 3] } });
+const encrypted = encryptJson(source, key);
+const base64Key = Buffer.from(key, 'hex').toString('base64');
+assert.deepEqual(decryptJson(encryptJson(source, base64Key), base64Key), { json: source, legacy: false });
+assert.match(encrypted, /^enc:v1:/);
+assert.notEqual(encrypted, source);
+assert.deepEqual(decryptJson(encrypted, key), { json: source, legacy: false });
+assert.deepEqual(decryptJson(source, key), { json: source, legacy: true });
+assert.throws(() => decryptJson(encrypted, 'f'.repeat(64)), /decryption failed/);
+assert.throws(() => getKey('too-short'), /64 hex characters/);
+const parts = encrypted.split(':');
+parts[4] = (parts[4][0] === 'A' ? 'B' : 'A') + parts[4].slice(1);
+assert.throws(() => decryptJson(parts.join(':'), key));
+console.log('Auth crypto tests passed: AES-256-GCM round-trip, legacy detection, invalid key and tamper rejection.');

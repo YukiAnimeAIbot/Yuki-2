@@ -1,0 +1,13 @@
+.git
+.env
+.env.*
+!.env.example
+node_modules
+sessions
+data
+memory
+auth_info
+auth_info_baileys
+*.log
+npm-debug.log*
+.DS_Store

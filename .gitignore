@@ -1,0 +1,31 @@
+node_modules/
+.env
+.env.*
+*.log
+*.session
+
+# Secrets
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# WhatsApp authentication sessions
+auth_info_baileys/
+auth_info/
+session/
+sessions/
+creds.json
+*.session
+
+# Dependencies and temporary files
+node_modules/
+.tmp/
+tmp/
+sticker-test/
+yuki-sticker-test.webp
+
+# Logs and backups
+*.log
+ported-kord.js.before-duration-fix
+ported-kord.js.pre-sticker-fix
